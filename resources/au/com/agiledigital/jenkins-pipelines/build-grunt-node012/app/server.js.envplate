@@ -1,0 +1,37 @@
+/** Basic static server setup. */
+var http = require('http');
+var connect = require('connect');
+var modRewrite = require('connect-modrewrite');
+var serveStatic = require('serve-static');
+
+/**
+ * True if the specified URL is able to be cached, false otherwise.
+ */
+var isCacheableRequest = function(url) {
+  var cacheablePaths = ['/images/', '/scripts/', '/styles/'];
+
+  // Matches things that look like they end in a hash, e.g. btn-arrow.19cf4426.png
+  var re = /^.+\.[0-9a-z]+\..+$/;
+
+  return cacheablePaths.some(function(path) {
+    return url.indexOf(path) > -1 && re.test(url);
+  });
+};
+
+/**
+ * Sets Cache-Control and Expires headers if the request is able to be cached.
+ */
+var setHeaders = function(res, path) {
+  if (isCacheableRequest(path)) {
+    var cacheSeconds = ${CACHE_SECONDS:-21600};
+    var cacheMilliseconds = cacheSeconds * 1000;
+    res.setHeader('Cache-Control', 'max-age=' + cacheSeconds);
+    res.setHeader('Expires', Date.now() + cacheMilliseconds);
+  }
+};
+
+var app = connect()
+  .use(modRewrite(['!\\.html|\\.txt|\\.ico|\\/views|\\/styles|\\/scripts|\\/images|\\/fonts|\\/bower_components /index.html [L]']))
+  .use(serveStatic('/usr/src/assets', { 'setHeaders': setHeaders }));
+
+http.createServer(app).listen(8000);
