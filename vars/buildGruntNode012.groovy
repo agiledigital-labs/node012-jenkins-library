@@ -100,15 +100,15 @@ def call(Map config) {
 
     stage('Build docker image') {
       dir('docker') {
-        sh "docker build -t ${dockerImageName} ."
+        // sh "docker build -t ${dockerImageName} ."
       }
     }
 
     stage('Push to docker registry') {
-      sh "docker tag ${config.dockerImageName}:latest ${config.dockerRegistry}/${config.dockerImageName}:git-sha-${gitCommitHash}"
-      sh "docker tag ${config.dockerImageName}:latest ${config.dockerRegistry}/${config.dockerImageName}:${buildImageTag}"
-      sh "docker push ${config.dockerRegistry}/${config.dockerImageName}:git-sha-${gitCommitHash}"
-      sh "docker push ${config.dockerRegistry}/${config.dockerImageName}:${buildImageTag}"
+      // sh "docker tag ${config.dockerImageName}:latest ${config.dockerRegistry}/${config.dockerImageName}:git-sha-${gitCommitHash}"
+      // sh "docker tag ${config.dockerImageName}:latest ${config.dockerRegistry}/${config.dockerImageName}:${buildImageTag}"
+      // sh "docker push ${config.dockerRegistry}/${config.dockerImageName}:git-sha-${gitCommitHash}"
+      // sh "docker push ${config.dockerRegistry}/${config.dockerImageName}:${buildImageTag}"
     }
   }
   
