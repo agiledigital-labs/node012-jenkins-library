@@ -9,7 +9,7 @@
 def call(Map config) {
   final npm = { cmd ->
     ansiColor('xterm') {
-      dir(baseDir) {
+      dir(config.baseDir) {
         sh "npm ${cmd}"
       }
     }
@@ -17,7 +17,7 @@ def call(Map config) {
 
   final bower = { cmd ->
     ansiColor('xterm') {
-      dir(baseDir) {
+      dir(config.baseDir) {
         sh "bower ${cmd}"
       }
     }
@@ -25,7 +25,7 @@ def call(Map config) {
 
   final grunt = { cmd ->
     ansiColor('xterm') {
-      dir(baseDir) {
+      dir(config.baseDir) {
         sh "grunt ${cmd}"
       }
     }
@@ -52,7 +52,7 @@ def call(Map config) {
 
     stage('Test') {
       grunt "test"
-      junit "$baseDir/test-output/**/*.xml"
+      junit "${config.baseDir}/test-output/**/*.xml"
     }
 
     stage('Build artifacts') {
@@ -63,7 +63,7 @@ def call(Map config) {
       sh "mkdir -p docker/app"
       sh "mkdir -p docker/assets"
       sh "mkdir -p docker/config"
-      sh "cp -r \"${baseDir}/dist\" docker/assets"
+      sh "cp -r \"${config.baseDir}/dist\" docker/assets"
       sh "cp *.conf docker/config/"
       sh "cp /usr/share/jenkins/confy-assembly-2.3.jar ."
     }
