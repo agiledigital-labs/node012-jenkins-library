@@ -51,6 +51,8 @@ def call(Map config) {
     }
 
     stage('Test') {
+      sh "pwd"
+      sh "ls ../.."
       grunt "test"
       junit "${config.baseDir}/test-output/**/*.xml"
     }
