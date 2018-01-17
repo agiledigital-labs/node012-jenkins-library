@@ -1,6 +1,6 @@
 def call() {
 	return [
 		'/home/jenkins/.npm',
-		'/home/jenkins/cache/bower'
+		'/home/jenkins/.cache/bower'
 	] 
 }
