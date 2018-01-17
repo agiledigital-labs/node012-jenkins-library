@@ -35,7 +35,7 @@ def call(Map config) {
 
     stage('Verify Environment') {
       // Check node deps
-      assert sh(script: 'node --version', returnStdout: true).trim() == "v0.12.17": "expected node version 0.12.17"
+      assert sh(script: 'node --version', returnStdout: true).trim() == "v0.12.18": "expected node version 0.12.18"
       assert sh(script: 'npm --version', returnStdout: true).trim() == "2.15.11": "expected npm version 2.15.11"
       assert sh(script: 'bower --version', returnStdout: true).trim() == "1.8.2": "expected bower version 1.8.2"
       assert sh(script: 'grunt --version', returnStdout: true).trim() == "grunt-cli v1.2.0": "expected grunt version 1.2.0"
@@ -111,5 +111,5 @@ def call(Map config) {
       // sh "docker push ${config.dockerRegistry}/${config.dockerImageName}:${buildImageTag}"
     }
   }
-  
+
 }
