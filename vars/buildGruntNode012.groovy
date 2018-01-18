@@ -54,9 +54,7 @@ def call(Map config) {
       grunt "test"
       sh "pwd"
       sh "echo sleeping now, find my results!"
-      sh "sleep 10000"
-      cat "${config.baseDir}/test-output/test.xml"
-      junit "${config.baseDir}/test-output/*.xml"
+      junit "${config.baseDir}/PhantomJS*/test-output/**/*.xml"
     }
 
     stage('Build artifacts') {
