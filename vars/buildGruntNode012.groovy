@@ -54,6 +54,9 @@ def call(Map config) {
       grunt "test"
       sh "pwd"
       sh "ls ${config.baseDir}/test-output"
+      sh "ls -la ${config.baseDir}"
+      sh "ls test-output"
+      sh "find"
       cat "${config.baseDir}/test-output/test.xml"
       junit "${config.baseDir}/test-output/*.xml"
     }
