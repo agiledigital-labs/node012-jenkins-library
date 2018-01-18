@@ -72,26 +72,6 @@ def call(Map config) {
 
   }
 
-  stage('Generate Dockerfile and associated scripts') {
-    dir('artifacts') {
-      writeFile(file: "Dockerfile", 
-        text: libraryResource('au/com/agiledigital/jenkins-pipelines/build-npm-grunt04/Dockerfile'))
-      writeFile(file: "generate_config_json.sh", 
-        text: libraryResource('au/com/agiledigital/jenkins-pipelines/build-npm-grunt04/generate_config_json.sh'))
-      writeFile(file: "app/Gruntfile.js", 
-        text: libraryResource('au/com/agiledigital/jenkins-pipelines/build-npm-grunt04/app/Gruntfile.js'))
-      writeFile(file: "app/package.json", 
-        text: libraryResource('au/com/agiledigital/jenkins-pipelines/build-npm-grunt04/app/package.json'))
-      writeFile(file: "app/run.sh", 
-        text: libraryResource('au/com/agiledigital/jenkins-pipelines/build-npm-grunt04/run.sh'))
-      writeFile(file: "app/server.js.envplate", 
-        text: libraryResource('au/com/agiledigital/jenkins-pipelines/build-npm-grunt04/app/server.js.envplate'))
-     
-      sh 'chmod +x generate_config_json.sh'
-      sh 'chmod +x app/run.sh'
-    }
-  }
-
   stage('Archive to Jenkins') {
     sh "zip -r artifacts.zip artifacts"
     archiveArtifacts "artifacts.zip"
