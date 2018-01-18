@@ -54,6 +54,7 @@ def call(Map config) {
       grunt "test"
       sh "pwd"
       sh "ls ${config.baseDir}/test-output"
+      sh "touch ${config.baseDir}/test-file"
       sh "ls -la ${config.baseDir}"
       sh "ls test-output"
       sh "find"
