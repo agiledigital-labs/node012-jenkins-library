@@ -51,10 +51,8 @@ def call(Map config) {
     }
 
     stage('Test') {
-      sh "pwd"
-      sh "ls ../.."
       grunt "test"
-      junit "${config.baseDir}/test-output/**/*.xml"
+      junit "${config.baseDir}/test-output/*.xml"
     }
 
     stage('Build artifacts') {
@@ -62,18 +60,18 @@ def call(Map config) {
     }
 
     stage('Copy artifacts to staging area') {
-      sh "mkdir -p docker/app"
-      sh "mkdir -p docker/assets"
-      sh "mkdir -p docker/config"
-      sh "cp -r \"${config.baseDir}/dist\" docker/assets"
-      sh "cp *.conf docker/config/"
+      sh "mkdir -p artifacts/app"
+      sh "mkdir -p artifacts/assets"
+      sh "mkdir -p artifacts/config"
+      sh "cp -r \"${config.baseDir}/dist\" artifacts/assets"
+      sh "cp *.conf artifacts/config/"
       sh "cp /usr/share/jenkins/confy-assembly-2.3.jar ."
     }
 
   }
 
   stage('Generate Dockerfile and associated scripts') {
-    dir('docker') {
+    dir('artifacts') {
       writeFile(file: "Dockerfile", 
         text: libraryResource('au/com/agiledigital/jenkins-pipelines/build-npm-grunt04/Dockerfile'))
       writeFile(file: "generate_config_json.sh", 
@@ -93,25 +91,8 @@ def call(Map config) {
   }
 
   stage('Archive to Jenkins') {
-    sh "zip -r artifacts.zip docker"
-    sh "find docker"
+    sh "zip -r artifacts.zip artifacts"
     archiveArtifacts "artifacts.zip"
-  }
-
-  container('docker') {
-
-    stage('Build docker image') {
-      dir('docker') {
-        // sh "docker build -t ${dockerImageName} ."
-      }
-    }
-
-    stage('Push to docker registry') {
-      // sh "docker tag ${config.dockerImageName}:latest ${config.dockerRegistry}/${config.dockerImageName}:git-sha-${gitCommitHash}"
-      // sh "docker tag ${config.dockerImageName}:latest ${config.dockerRegistry}/${config.dockerImageName}:${buildImageTag}"
-      // sh "docker push ${config.dockerRegistry}/${config.dockerImageName}:git-sha-${gitCommitHash}"
-      // sh "docker push ${config.dockerRegistry}/${config.dockerImageName}:${buildImageTag}"
-    }
   }
 
 }
