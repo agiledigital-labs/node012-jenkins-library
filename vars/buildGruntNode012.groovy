@@ -52,8 +52,6 @@ def call(Map config) {
 
     stage('Test') {
       grunt "test"
-      sh "pwd"
-      sh "echo sleeping now, find my results!"
       junit "${config.baseDir}/PhantomJS*/test-output/**/*.xml"
     }
 
@@ -62,12 +60,10 @@ def call(Map config) {
     }
 
     stage('Copy artifacts to staging area') {
-      sh "mkdir -p artifacts/app"
       sh "mkdir -p artifacts/assets"
       sh "mkdir -p artifacts/config"
       sh "cp -r \"${config.baseDir}/dist\" artifacts/assets"
       sh "cp *.conf artifacts/config/"
-      sh "cp /usr/share/jenkins/confy-assembly-2.3.jar ."
     }
 
   }
