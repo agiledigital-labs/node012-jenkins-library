@@ -69,8 +69,9 @@ def call(Map config) {
   }
 
   stage('Archive to Jenkins') {
-    sh "zip -r artifacts.zip artifacts"
-    archiveArtifacts "artifacts.zip"
+    def zipName = "${project}-${component}-${buildNumber}.zip"
+    sh "zip -r ${zipName} artifacts"
+    archiveArtifacts zipName
   }
 
 }
