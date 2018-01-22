@@ -31,9 +31,14 @@ def call(Map config) {
     }
   }
 
-  def artifactDir = "${project}-${component}-artifacts"
 
   container('build-grunt-node012') {
+
+    stage('temp testing') {
+      sh "echo Project:   ${project}"
+      sh "echo Component: ${component}"
+      sh "echo BuildNumber: ${buildNumber}"
+    }
 
     stage('Verify Environment') {
       // Check node deps
@@ -62,6 +67,7 @@ def call(Map config) {
     }
 
     stage('Copy artifacts to staging area') {
+      def artifactDir = "${project}-${component}-artifacts"
       sh "mkdir -p ${artifactDir}/assets"
       sh "mkdir -p ${artifactDir}/config"
       sh "cp -r \"${config.baseDir}/dist\" ${artifactDir}/assets"
@@ -71,6 +77,7 @@ def call(Map config) {
   }
 
   stage('Archive to Jenkins') {
+    def artifactDir = "${project}-${component}-artifacts"
     def zipName = "${project}-${component}-${buildNumber}.zip"
     sh "zip -r \"${zipName}\" \"${artifactDir}\""
     archiveArtifacts zipName
