@@ -31,6 +31,8 @@ def call(Map config) {
     }
   }
 
+  def artifactDir = "${project}-${component}-artifacts"
+
   container('build-grunt-node012') {
 
     stage('Verify Environment') {
@@ -60,17 +62,17 @@ def call(Map config) {
     }
 
     stage('Copy artifacts to staging area') {
-      sh "mkdir -p artifacts/assets"
-      sh "mkdir -p artifacts/config"
-      sh "cp -r \"${config.baseDir}/dist\" artifacts/assets"
-      sh "cp *.conf artifacts/config/"
+      sh "mkdir -p ${artifactDir}/assets"
+      sh "mkdir -p ${artifactDir}/config"
+      sh "cp -r \"${config.baseDir}/dist\" ${artifactDir}/assets"
+      sh "cp *.conf ${artifactDir}/config/"
     }
 
   }
 
   stage('Archive to Jenkins') {
     def zipName = "${project}-${component}-${buildNumber}.zip"
-    sh "zip -r ${zipName} artifacts"
+    sh "zip -r \"${zipName}\" \"${artifactDir}\""
     archiveArtifacts zipName
   }
 
