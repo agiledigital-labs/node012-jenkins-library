@@ -63,23 +63,29 @@ def call(Map config) {
       junit "${config.baseDir}/PhantomJS*/test-output/**/*.xml"
     }
 
-    stage('Build artifacts') {
-      grunt "build"
-    }
-
-    stage('Copy artifacts to staging area') {
-      sh "mkdir -p ${artifactDir}/assets"
-      sh "mkdir -p ${artifactDir}/config"
-      sh "cp -r \"${config.baseDir}/dist\" ${artifactDir}/assets"
-      sh "cp *.conf ${artifactDir}/config/"
-    }
-
   }
 
-  stage('Archive to Jenkins') {
-    def tarName = "${config.project}-${config.component}-${config.buildNumber}.tar.gz"
-    sh "tar -czvf \"${tarName}\" -C \"${artifactDir}\" ."
-    archiveArtifacts tarName
+  if(config.stage == 'dist') {
+
+    container('build-grunt-node012') {
+      stage('Build artifacts') {
+        grunt "build"
+      }
+
+      stage('Copy artifacts to staging area') {
+        sh "mkdir -p ${artifactDir}/assets"
+        sh "mkdir -p ${artifactDir}/config"
+        sh "cp -r \"${config.baseDir}/dist\" ${artifactDir}/assets"
+        sh "cp *.conf ${artifactDir}/config/"
+      }
+    }
+
+    stage('Archive to Jenkins') {
+      def tarName = "${config.project}-${config.component}-${config.buildNumber}.tar.gz"
+      sh "tar -czvf \"${tarName}\" -C \"${artifactDir}\" ."
+      archiveArtifacts tarName
+    }
+
   }
 
 }
