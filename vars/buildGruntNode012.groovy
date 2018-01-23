@@ -33,7 +33,7 @@ def call(Map config) {
 
   def artifactDir = "${config.project}-${config.component}-artifacts"
 
-  container('build-grunt-node012') {
+  container('node012-builder') {
 
     stage('Build Details') {
       sh "echo Project:   ${config.project}"
@@ -67,7 +67,7 @@ def call(Map config) {
 
   if(config.stage == 'dist') {
 
-    container('build-grunt-node012') {
+    container('node012-builder') {
       stage('Build artifacts') {
         grunt "build"
       }
