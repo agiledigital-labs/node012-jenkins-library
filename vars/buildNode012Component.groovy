@@ -36,9 +36,9 @@ def call(Map config) {
   container('node012-builder') {
 
     stage('Build Details') {
-      sh "echo Project:   ${config.project}"
-      sh "echo Component: ${config.component}"
-      sh "echo BuildNumber: ${config.buildNumber}"
+      echo "Project:   ${config.project}"
+      echo "Component: ${config.component}"
+      echo "BuildNumber: ${config.buildNumber}"
     }
 
     stage('Verify Environment') {
