@@ -75,7 +75,7 @@ def call(Map config) {
       stage('Copy artifacts to staging area') {
         sh "mkdir -p ${artifactDir}/assets"
         sh "mkdir -p ${artifactDir}/config"
-        sh "cp -r \"${config.baseDir}/dist\" ${artifactDir}/assets"
+        sh "cp -r \"${config.baseDir}\"/dist/* ${artifactDir}/assets"
         sh "cp *.conf ${artifactDir}/config/"
       }
     }
