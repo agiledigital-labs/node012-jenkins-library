@@ -69,7 +69,7 @@ def call(Map config) {
 
     container('node012-builder') {
       stage('Build artifacts') {
-        grunt "build"
+        grunt "build --force"
       }
 
       stage('Copy artifacts to staging area') {
